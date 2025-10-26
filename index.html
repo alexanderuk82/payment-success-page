@@ -1,363 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Successful - Design System Sync</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Animated background particles */
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.5);
-      border-radius: 50%;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
-    }
-
-    .container {
-      text-align: center;
-      padding: 60px 40px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
-      max-width: 520px;
-      width: 90%;
-      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      z-index: 10;
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .success-icon {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 32px;
-      position: relative;
-    }
-
-    .circle-bg {
-      width: 120px;
-      height: 120px;
-      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-      box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
-    }
-
-    @keyframes scaleIn {
-      from {
-        transform: scale(0);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .checkmark {
-      animation: drawCheck 0.5s ease-out 0.5s both;
-    }
-
-    @keyframes drawCheck {
-      0% {
-        stroke-dashoffset: 100;
-      }
-      100% {
-        stroke-dashoffset: 0;
-      }
-    }
-
-    h1 {
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-      animation: fadeIn 0.6s ease-out 0.4s both;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      margin-bottom: 12px;
-      opacity: 0.95;
-      font-weight: 500;
-      animation: fadeIn 0.6s ease-out 0.5s both;
-    }
-
-    .description {
-      font-size: 15px;
-      opacity: 0.8;
-      line-height: 1.6;
-      margin-bottom: 32px;
-      animation: fadeIn 0.6s ease-out 0.6s both;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .status-box {
-      background: rgba(16, 185, 129, 0.2);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 32px;
-      animation: fadeIn 0.6s ease-out 0.7s both;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-right: 10px;
-      vertical-align: middle;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .status-text {
-      font-size: 15px;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .features {
-      text-align: left;
-      margin-bottom: 32px;
-      animation: fadeIn 0.6s ease-out 0.8s both;
-    }
-
-    .feature {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      font-size: 15px;
-      opacity: 0.9;
-    }
-
-    .feature-icon {
-      width: 24px;
-      height: 24px;
-      background: rgba(16, 185, 129, 0.2);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 14px 32px;
-      background: white;
-      color: #667eea;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 15px;
-      transition: all 0.2s;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      animation: fadeIn 0.6s ease-out 0.9s both;
-    }
-
-    .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .button:active {
-      transform: translateY(0);
-    }
-
-    .footer-note {
-      margin-top: 24px;
-      font-size: 13px;
-      opacity: 0.6;
-      animation: fadeIn 0.6s ease-out 1s both;
-    }
-
-    /* Confetti animation */
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: #f0f;
-      animation: confetti-fall 3s ease-out forwards;
-    }
-
-    @keyframes confetti-fall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f7f8fa;min-height:100vh;display:flex;align-items:center;justify-content:center;color:#1a1a1a;padding:20px;line-height:1.6}
+.container{max-width:580px;width:100%;background:white;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,0.05),0 10px 40px rgba(0,0,0,0.08);overflow:hidden;animation:slideUp 0.4s cubic-bezier(0.16,1,0.3,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.header{background:linear-gradient(135deg,#0066ff 0%,#0052cc 100%);padding:48px 40px;text-align:center;position:relative;overflow:hidden}
+.success-icon{width:80px;height:80px;margin:0 auto 24px;position:relative;z-index:1}
+.checkmark-circle{animation:scaleIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s both}
+.checkmark-path{stroke-dasharray:60;stroke-dashoffset:60;animation:drawCheck 0.4s ease-out 0.3s forwards}
+@keyframes scaleIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+h1{font-size:28px;font-weight:700;color:white;margin-bottom:8px;letter-spacing:-0.5px;position:relative;z-index:1}
+.subtitle{font-size:16px;color:rgba(255,255,255,0.9);font-weight:500;position:relative;z-index:1}
+.content{padding:40px}
+.order-number{background:#f7f8fa;border-radius:12px;padding:20px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:center}
+.order-label{font-size:14px;color:#6b7280;font-weight:500}
+.order-value{font-size:15px;color:#1a1a1a;font-weight:600;font-family:'Courier New',monospace}
+.info-section{margin-bottom:32px}
+.info-title{font-size:18px;font-weight:600;color:#1a1a1a;margin-bottom:16px}
+.info-text{font-size:15px;color:#6b7280;line-height:1.6;margin-bottom:12px}
+.features{margin-top:24px}
+.feature{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f3f4f6}
+.feature:last-child{border-bottom:none}
+.feature-icon{width:20px;height:20px;flex-shrink:0;margin-top:2px}
+.feature-text{font-size:15px;color:#1a1a1a;font-weight:500}
+.feature-description{font-size:14px;color:#6b7280;margin-top:2px}
+.status-banner{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%);border:1px solid #a7f3d0;border-radius:12px;padding:16px 20px;margin-bottom:32px;display:flex;align-items:center;gap:12px}
+.status-text{font-size:14px;color:#065f46;font-weight:500}
+.button{width:100%;padding:16px;background:#0066ff;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+.button:hover{background:#0052cc;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,102,255,0.3)}
+.footer-note{text-align:center;margin-top:24px;font-size:13px;color:#9ca3af}
+.divider{height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:32px 0}
+</style>
 </head>
 <body>
-  <!-- Animated background particles -->
-  <script>
-    for (let i = 0; i < 20; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.animationDelay = Math.random() * 6 + 's';
-      particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-      document.body.appendChild(particle);
-    }
-  </script>
-
-  <div class="container">
-    <div class="success-icon">
-      <div class="circle-bg">
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-          <path
-            class="checkmark"
-            d="M15 30l12 12 18-24"
-            stroke="white"
-            stroke-width="5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-dasharray="100"
-            stroke-dashoffset="100"
-            fill="none"
-          />
-        </svg>
-      </div>
-    </div>
-
-    <h1>🎉 Payment Successful!</h1>
-    <p class="subtitle">Welcome to Design System Sync Pro</p>
-    <p class="description">
-      Your subscription is now active. Enjoy unlimited scans and exports!
-    </p>
-
-    <div class="status-box">
-      <div class="status-text">
-        <div class="spinner"></div>
-        <span>Activating your Pro subscription...</span>
-      </div>
-    </div>
-
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 7l3 3 5-6" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span>Unlimited variable scans</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 7l3 3 5-6" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span>Unlimited component exports</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 7l3 3 5-6" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span>GitHub & Bitbucket integration</span>
-      </div>
-    </div>
-
-    <button onclick="window.close()" class="button">
-      Close Window
-    </button>
-
-    <p class="footer-note">
-      Your Figma plugin will detect the upgrade automatically
-    </p>
-  </div>
-
-  <script>
-    // Auto-close after 8 seconds
-    setTimeout(() => {
-      window.close();
-    }, 8000);
-
-    // Create confetti effect
-    function createConfetti() {
-      const colors = ['#667eea', '#764ba2', '#10B981', '#F59E0B', '#EF4444'];
-      for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = Math.random() * 100 + '%';
-          confetti.style.top = '-10px';
-          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-          confetti.style.animationDelay = Math.random() * 0.5 + 's';
-          confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-          document.body.appendChild(confetti);
-
-          setTimeout(() => confetti.remove(), 3000);
-        }, i * 30);
-      }
-    }
-
-    // Start confetti after page loads
-    setTimeout(createConfetti, 500);
-  </script>
+<div class="container">
+<div class="header">
+<div class="success-icon">
+<svg viewBox="0 0 80 80" fill="none">
+<circle class="checkmark-circle" cx="40" cy="40" r="36" fill="white"/>
+<path class="checkmark-path" d="M23 40L34 51L57 28" stroke="#0066ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+<h1>Order Confirmed</h1>
+<p class="subtitle">Thank you for your purchase</p>
+</div>
+<div class="content">
+<div class="order-number">
+<span class="order-label">Order Number</span>
+<span class="order-value">#DS-<span id="orderNumber"></span></span>
+</div>
+<div class="status-banner">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+<circle cx="10" cy="10" r="9" fill="#10b981"/>
+<path d="M6 10l3 3 5-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<span class="status-text">Your subscription is being activated...</span>
+</div>
+<div class="info-section">
+<h2 class="info-title">What's Next?</h2>
+<p class="info-text">Your Design System Sync Pro subscription is now active. Return to Figma to start using your unlimited features.</p>
+</div>
+<div class="features">
+<div class="feature">
+<svg class="feature-icon" viewBox="0 0 20 20" fill="none">
+<circle cx="10" cy="10" r="8" stroke="#0066ff" stroke-width="2" fill="none"/>
+<path d="M9 6h2v5H9V6zm0 6h2v2H9v-2z" fill="#0066ff"/>
+</svg>
+<div>
+<div class="feature-text">Unlimited Scans</div>
+<div class="feature-description">Scan variables and components without limits</div>
+</div>
+</div>
+<div class="feature">
+<svg class="feature-icon" viewBox="0 0 20 20" fill="none">
+<path d="M4 4h12v2H4V4zm0 5h12v2H4V9zm0 5h12v2H4v-2z" fill="#0066ff"/>
+</svg>
+<div>
+<div class="feature-text">Export Anywhere</div>
+<div class="feature-description">Export to GitHub, Bitbucket, and more</div>
+</div>
+</div>
+<div class="feature">
+<svg class="feature-icon" viewBox="0 0 20 20" fill="none">
+<path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-3H9V6h2v4z" fill="#0066ff"/>
+</svg>
+<div>
+<div class="feature-text">Priority Support</div>
+<div class="feature-description">Get help when you need it</div>
+</div>
+</div>
+</div>
+<div class="divider"></div>
+<button class="button" onclick="window.close()">Return to Figma</button>
+<p class="footer-note">Your plugin will detect the upgrade automatically</p>
+</div>
+</div>
+<script>
+document.getElementById('orderNumber').textContent=Math.random().toString(36).substring(2,9).toUpperCase();
+setTimeout(()=>window.close(),10000);
+setTimeout(()=>{
+document.querySelector('.status-text').textContent='Subscription activated successfully';
+},2000);
+</script>
 </body>
 </html>
