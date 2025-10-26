@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="8;url=about:blank">
 <title>Order Confirmed</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -107,34 +108,67 @@ h1{font-size:28px;font-weight:700;color:white;margin-bottom:8px;letter-spacing:-
 const urlParams = new URLSearchParams(window.location.search);
 const sessionId = urlParams.get('session_id');
 
-// Display real order number from Stripe session ID or generate one
-if (sessionId) {
-  // Use last 8 characters of session ID for order number
-  document.getElementById('orderNumber').textContent = sessionId.substring(sessionId.length - 8).toUpperCase();
-} else {
-  // Fallback to random if no session_id
-  document.getElementById('orderNumber').textContent = Math.random().toString(36).substring(2,9).toUpperCase();
+// Fetch invoice ID from Stripe session
+async function fetchInvoiceId() {
+  if (!sessionId) {
+    // Fallback to using session ID format
+    document.getElementById('orderNumber').textContent = Math.random().toString(36).substring(2,9).toUpperCase();
+    return;
+  }
+
+  try {
+    // Call our edge function to get invoice details
+    const response = await fetch('https://yhjtvcfjtawarrvoaztg.supabase.co/functions/v1/get-invoice-id', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId })
+    });
+
+    const data = await response.json();
+
+    if (data.invoiceId) {
+      // Display real invoice number (e.g., in_1AbC2dEf becomes 1ABC2DEF)
+      const invoiceNum = data.invoiceId.replace('in_', '').substring(0, 8).toUpperCase();
+      document.getElementById('orderNumber').textContent = invoiceNum;
+    } else {
+      // Use session ID as fallback
+      document.getElementById('orderNumber').textContent = sessionId.substring(sessionId.length - 8).toUpperCase();
+    }
+  } catch (error) {
+    console.error('Error fetching invoice:', error);
+    // Use session ID as fallback
+    document.getElementById('orderNumber').textContent = sessionId.substring(sessionId.length - 8).toUpperCase();
+  }
 }
+
+// Load invoice ID
+fetchInvoiceId();
 
 // Update status after 2 seconds
 setTimeout(() => {
   document.querySelector('.status-text').textContent = 'Subscription activated successfully';
 }, 2000);
 
+// Countdown timer
+let countdown = 8;
+const footerNote = document.querySelector('.footer-note');
+const countdownInterval = setInterval(() => {
+  countdown--;
+  if (countdown > 0) {
+    footerNote.textContent = `Closing in ${countdown} seconds... (or click the button)`;
+  } else {
+    clearInterval(countdownInterval);
+    footerNote.textContent = 'You can close this tab now';
+  }
+}, 1000);
+
 // Function to close window
 function closeWindow() {
-  // Try to close the window
   window.close();
-  // If still open after 500ms, show message
+  // If window doesn't close, redirect to blank
   setTimeout(() => {
-    const btn = document.querySelector('.button');
-    if (btn) {
-      btn.textContent = 'Please close this tab manually';
-      btn.style.background = '#6b7280';
-      btn.style.cursor = 'default';
-      btn.onclick = null;
-    }
-  }, 500);
+    window.location.href = 'about:blank';
+  }, 100);
 }
 </script>
 </body>
