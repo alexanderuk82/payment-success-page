@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="refresh" content="8;url=about:blank">
 <title>Order Confirmed</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -149,26 +148,66 @@ setTimeout(() => {
   document.querySelector('.status-text').textContent = 'Subscription activated successfully';
 }, 2000);
 
-// Countdown timer
-let countdown = 8;
+// Update footer note
 const footerNote = document.querySelector('.footer-note');
-const countdownInterval = setInterval(() => {
-  countdown--;
-  if (countdown > 0) {
-    footerNote.textContent = `Closing in ${countdown} seconds... (or click the button)`;
-  } else {
-    clearInterval(countdownInterval);
-    footerNote.textContent = 'You can close this tab now';
-  }
-}, 1000);
+footerNote.textContent = 'Click the button below to close this window';
 
-// Function to close window
+// Function to close window - show big message if can't close
 function closeWindow() {
-  window.close();
-  // If window doesn't close, redirect to blank
+  const closed = window.close();
+
+  // Show big close message after attempting to close
   setTimeout(() => {
-    window.location.href = 'about:blank';
-  }, 100);
+    // Create overlay with close message
+    document.body.innerHTML = `
+      <div style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #f7f8fa;
+        text-align: center;
+        padding: 20px;
+      ">
+        <div style="
+          background: white;
+          border-radius: 16px;
+          padding: 60px 40px;
+          max-width: 500px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 10px 40px rgba(0,0,0,0.08);
+        ">
+          <svg width="80" height="80" viewBox="0 0 80 80" style="margin: 0 auto 24px;">
+            <circle cx="40" cy="40" r="36" fill="#10b981"/>
+            <path d="M25 40L35 50L55 30" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <h1 style="
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            font-family: 'Inter', sans-serif;
+          ">All Done!</h1>
+          <p style="
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 32px;
+            font-family: 'Inter', sans-serif;
+          ">You can now close this tab and return to Figma</p>
+          <button onclick="window.close()" style="
+            padding: 16px 32px;
+            background: #0066ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+          ">Click Here to Close Tab</button>
+        </div>
+      </div>
+    `;
+  }, 300);
 }
 </script>
 </body>
