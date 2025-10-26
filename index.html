@@ -19,7 +19,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans
 h1{font-size:28px;font-weight:700;color:white;margin-bottom:8px;letter-spacing:-0.5px;position:relative;z-index:1}
 .subtitle{font-size:16px;color:rgba(255,255,255,0.9);font-weight:500;position:relative;z-index:1}
 .content{padding:40px}
-.order-number{background:#f7f8fa;border-radius:12px;padding:20px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:center}
+.order-number{background:#f7f8fa;border-radius:12px;padding:20px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:center;border-top:2px dashed #d1d5db;border-bottom:2px dashed #d1d5db;position:relative}
+.order-number::before,.order-number::after{content:'';position:absolute;width:24px;height:24px;background:#f7f8fa;border-radius:50%;top:50%;transform:translateY(-50%)}
+.order-number::before{left:-12px;box-shadow:inset -3px 0 5px rgba(0,0,0,0.05)}
+.order-number::after{right:-12px;box-shadow:inset 3px 0 5px rgba(0,0,0,0.05)}
 .order-label{font-size:14px;color:#6b7280;font-weight:500}
 .order-value{font-size:15px;color:#1a1a1a;font-weight:600;font-family:'Courier New',monospace}
 .info-section{margin-bottom:32px}
@@ -97,9 +100,7 @@ h1{font-size:28px;font-weight:700;color:white;margin-bottom:8px;letter-spacing:-
 </div>
 </div>
 </div>
-<div class="divider"></div>
-<button class="button" onclick="closeWindow()">Return to Figma</button>
-<p class="footer-note">You can close this tab and return to Figma</p>
+<button class="button" onclick="closeWindow()">Go to Figma and Close This Window</button>
 </div>
 </div>
 <script>
@@ -148,9 +149,6 @@ setTimeout(() => {
   document.querySelector('.status-text').textContent = 'Subscription activated successfully';
 }, 2000);
 
-// Update footer note
-const footerNote = document.querySelector('.footer-note');
-footerNote.textContent = 'Click the button below to close this window';
 
 // Function to close window - show big message if can't close
 function closeWindow() {
