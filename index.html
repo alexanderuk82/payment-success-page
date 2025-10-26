@@ -98,16 +98,44 @@ h1{font-size:28px;font-weight:700;color:white;margin-bottom:8px;letter-spacing:-
 </div>
 </div>
 <div class="divider"></div>
-<button class="button" onclick="window.close()">Return to Figma</button>
-<p class="footer-note">Your plugin will detect the upgrade automatically</p>
+<button class="button" onclick="closeWindow()">Return to Figma</button>
+<p class="footer-note">You can close this tab and return to Figma</p>
 </div>
 </div>
 <script>
-document.getElementById('orderNumber').textContent=Math.random().toString(36).substring(2,9).toUpperCase();
-setTimeout(()=>window.close(),10000);
-setTimeout(()=>{
-document.querySelector('.status-text').textContent='Subscription activated successfully';
-},2000);
+// Get session_id from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const sessionId = urlParams.get('session_id');
+
+// Display real order number from Stripe session ID or generate one
+if (sessionId) {
+  // Use last 8 characters of session ID for order number
+  document.getElementById('orderNumber').textContent = sessionId.substring(sessionId.length - 8).toUpperCase();
+} else {
+  // Fallback to random if no session_id
+  document.getElementById('orderNumber').textContent = Math.random().toString(36).substring(2,9).toUpperCase();
+}
+
+// Update status after 2 seconds
+setTimeout(() => {
+  document.querySelector('.status-text').textContent = 'Subscription activated successfully';
+}, 2000);
+
+// Function to close window
+function closeWindow() {
+  // Try to close the window
+  window.close();
+  // If still open after 500ms, show message
+  setTimeout(() => {
+    const btn = document.querySelector('.button');
+    if (btn) {
+      btn.textContent = 'Please close this tab manually';
+      btn.style.background = '#6b7280';
+      btn.style.cursor = 'default';
+      btn.onclick = null;
+    }
+  }, 500);
+}
 </script>
 </body>
 </html>
